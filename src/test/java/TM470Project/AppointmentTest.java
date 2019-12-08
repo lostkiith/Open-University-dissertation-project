@@ -21,7 +21,7 @@ public class AppointmentTest {
                 Address.createAddress("Cake road", "rocky", "England", "London", "bs3 5dx"),
                 (long)484648675, AreaOfExperience.Forensic, "JohnList", "staff" );
 
-        Appointment app1 = Appointment.createAppointment(DayOfWeek.TUESDAY, LocalTime.of(13,00), LocalTime.of(14,00), c1, sm1);
+        Appointment app1 = Appointment.createAppointment(DayOfWeek.TUESDAY, LocalTime.of(13, 0), LocalTime.of(14, 0), c1, sm1);
         c1.setAppointment(app1);
 
         app1.createAppointmentMeeting(LocalTime.of(13, 10, 0)

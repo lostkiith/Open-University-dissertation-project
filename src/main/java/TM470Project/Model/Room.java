@@ -3,7 +3,6 @@ package TM470Project.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 /**
  * Represents a room in a supported house.

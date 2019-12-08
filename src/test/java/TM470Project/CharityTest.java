@@ -66,10 +66,10 @@ public class CharityTest {
 
         //check that both the client and support staff member have the new appointment.
         try {
-            sm1 = (SupportStaffMember) staffRepository.findByNinNumber((long)4549854).get();
+            sm1 = (SupportStaffMember) staffRepository.findByNinNumber(4549854).get();
             app1 = sm1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
 
-            c1 = clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get();
+            c1 = clientRepository.findClientByNationalHealthServiceNumber(4785136).get();
             app2 = c1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
 
         } catch (NoSuchElementException e) {
@@ -90,7 +90,7 @@ public class CharityTest {
 
         //checking for appointment removal.
         try {
-            sm1 = (SupportStaffMember) staffRepository.findByNinNumber((long)4549854).get();
+            sm1 = (SupportStaffMember) staffRepository.findByNinNumber(4549854).get();
             app1 = sm1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
 
 
@@ -100,7 +100,7 @@ public class CharityTest {
 
         //checking for appointment removal.
         try {
-            c1 = clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get();
+            c1 = clientRepository.findClientByNationalHealthServiceNumber(4785136).get();
             app2 = c1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
 
         } catch (NoSuchElementException e) {
@@ -109,7 +109,7 @@ public class CharityTest {
 
 
         clientController.removeClient((long)4785136);
-        staffController.removeStaffMember((long)4549854);
+        staffController.removeStaffMember(4549854);
 
     }
 
@@ -122,15 +122,15 @@ public class CharityTest {
                 "2nd Street", "Appleton", "England", "Bristol", "BS253EZ", 3);
 
         //adding a client to a supported house.
-        charity.registerClientInSupportedHouse("Grape House",(long)4785136);
+        charity.registerClientInSupportedHouse("Grape House", 4785136);
 
         assertTrue(supportedHouseRepository.findSupportedHouseByHouseName("Grape House").get().
-                    findOccupant(clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get()));
+                    findOccupant(clientRepository.findClientByNationalHealthServiceNumber(4785136).get()));
 
-        charity.removeClientFromSupportedHouse("Grape House",(long)4785136);
+        charity.removeClientFromSupportedHouse("Grape House", 4785136);
 
         assertFalse(supportedHouseRepository.findSupportedHouseByHouseName("Grape House").get().
-                findOccupant(clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get()));
+                findOccupant(clientRepository.findClientByNationalHealthServiceNumber(4785136).get()));
 
         supportedHouseController.removeSupportedHouse("Grape House");
         clientController.removeClient((long)4785136);

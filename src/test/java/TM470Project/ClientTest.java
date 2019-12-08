@@ -119,10 +119,10 @@ public class ClientTest {
 
         //check that both the client and support staff member have the new appointment.
         try {
-            sm1 = (SupportStaffMember) staffRepository.findByNinNumber((long)4549854).get();
+            sm1 = (SupportStaffMember) staffRepository.findByNinNumber(4549854).get();
             sm1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
 
-            c1 = clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get();
+            c1 = clientRepository.findClientByNationalHealthServiceNumber(4785136).get();
             c1.getAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0));
         } catch (NoSuchElementException e) {
             System.out.println(e.toString());
@@ -131,8 +131,8 @@ public class ClientTest {
         charity.removeAppointment(DayOfWeek.SATURDAY, LocalTime.of(14,0), LocalTime.of(15,0),4785136
                 ,4549854);
 
-        clientRepository.delete(clientRepository.findClientByNationalHealthServiceNumber((long)4785136).get());
-        staffRepository.delete(staffRepository.findByNinNumber((long)4549854).get());
+        clientRepository.delete(clientRepository.findClientByNationalHealthServiceNumber(4785136).get());
+        staffRepository.delete(staffRepository.findByNinNumber(4549854).get());
     }
 
     @Test
@@ -183,7 +183,7 @@ public class ClientTest {
         }
 
         clientController.removeClient((long)8875484);
-        staffController.removeStaffMember((long)65845748);
+        staffController.removeStaffMember(65845748);
 
     }
 
