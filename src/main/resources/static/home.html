@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- fullCalendar -->
+  <link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'/>
+  <link href="CSS/bootstrap.min.css" rel='stylesheet' />
+
+  <link href='fullcalendar/core/main.min.css' rel='stylesheet' />
+  <link href='fullcalendar/daygrid/main.min.css' rel='stylesheet' />
+  <link href='fullcalendar/timegrid/main.min.css' rel='stylesheet' />
+  <link href='fullcalendar/bootstrap/main.min.css' rel='stylesheet' />
+
+
+  <link rel="stylesheet" href="CSS/home.css" type="text/css">
+  <!-- Custom JS and CSS -->
+  <script src="JS/jquery-3.4.1.js"></script>
+  <script src="JS/moment.min.js"></script>
+  <script src="JS/popper.min.js"></script>
+  <script src="JS/tooltip.min.js"></script>
+  <script src="JS/bootstrap.min.js"></script>
+  <script src='fullcalendar/core/main.min.js'></script>
+  <script src='fullcalendar/daygrid/main.min.js'></script>
+  <script src='fullcalendar/timegrid/main.min.js'></script>
+  <script src='fullcalendar/bootstrap/main.min.js'></script>
+  <script src="JS/home.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js"></script>
+
+  <title>Home Page</title>
+ </head>
+ <body>
+  <div class="container-fluid">
+   <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Menu</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+     <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+     <ul class="navbar-nav">
+      <li class="nav-item" id="ClientMeetingFormButton">
+      </li>
+      <li class="nav-item" id="listOfClientsButton">
+      </li>
+     </ul>
+    </div>
+   </nav>
+   <section>
+    <!-- Support staff member -->
+    <div class="form-popup" id="ClientMeetingForm">
+     <form class="form-container" onsubmit="submitMeetingForm();return false">
+
+     <h3 class="h3">Client meeting details</h3>
+     <!-- alert -->
+     <div class="alert alert-info" role="alert">
+      <p id="informMeeting"></p>
+     </div>
+
+     <label for="clientAtMeeting" class="form-check-label">Select Client</label><br>
+     <select onchange="onSelectAppointment()" id="clientAtMeeting" class="form-control" required>
+      <option>Select a Client</option>
+     </select><br>
+
+     <label for="clientAppointment" class="form-check-label">Select Appointment</label><br>
+     <select id="clientAppointment" class="form-control" hidden="true" required>
+     </select><br>
+
+     <label for="cancelled" class="form-check-label"><em>Tick if the client cancelled</em></label>
+     <input type="checkbox" class="form-check-input" id="cancelled" onclick="controlInput()"><br>
+
+     <label for="timeStarted" class="form-check-label"><em>time Started</em></label>
+     <input type="time" class="form-control" name="timeStarted" id="timeStarted" required>
+
+     <label for="timeFinished" class="form-check-label"><em>time Finished</em></label>
+     <input type="time" class="form-control" name="timeFinished" id="timeFinished" required><br>
+
+     <label for="Location" class="form-check-label"><em>Location</em></label>
+     <input type="text" class="form-control" name="Location" id="Location" required>
+
+     <label for="notes" id="labelNotes" class="form-check-label"><em>notes</em></label>
+     <input type="text" class="form-control"  name="notes" id="notes" required>
+
+     <label for="Date" class="form-check-label"><em>Date</em></label>
+     <input type="date" class="form-control" name="Date" id="Date"  required>
+
+     <label for="clientSignature" class="form-check-label"><em>The client signature</em></label>
+     <input type="text" class="form-control"  name="clientSignature" id="clientSignature" required>
+
+     <button type="submit" class="btn">Submit</button>
+     <button type="submit" class="btn cancel" onclick="closeClientMeetingForm()">Close</button>
+    </form>
+    </div>
+    <div class="form-popup" id="listOfClients">
+     <form class="form-container">
+     <h3 class="h3">Client details</h3>
+     <label for="clients">Select Client</label><br>
+     <select onchange="onClientSelect()" class="form-control" id="clients" required>
+      <option>Select a Client</option>
+     </select><br>
+     <p id="firstName" class="lead">First Name : </p>
+     <p id="lastName" class="lead">Last Name : </p>
+     <p id="username" class="lead">Username : </p>
+     <p id="sex" class="lead">Sex : </p>
+     <p id="dateOfBirth" class="lead">date Of Birth : </p>
+     <p id="generalCondition" class="lead">general Condition : </p>
+     <p id="nextOfKin" class="lead">Next Of kin : </p>
+     <p id="nextOfKinNumber" class="lead">Next of kin contact Number : </p>
+     <p id="Diagnosis" class="lead">Diagnosis : </p>
+     <p id="nationalHealthServiceNumber" class="lead">National Health Service Number : </p>
+     <p id="currentSupportedHouse" class="lead">Current Supported House : </p>
+     <button type="submit" class="btn cancel" onclick="closeListOfClientsForm();return false">Close</button>
+    </form>
+   </div>
+   </section> <!-- Popup Menus -->
+   <!-- alert -->
+   <div class="alert alert-info" role="alert" id="supportStaffInfo">
+    <p class="lead" id="informSupport"></p>
+   </div>
+
+   <!-- main body calendar and messages support staff and client -->
+   <div class="row">
+
+    <!-- calendar -->
+    <div class="col-12 col-md-8" id='calendar'></div>
+    <!-- messages --><br>
+    <div class="col-12 shadow-lg col-md-4" id="messaageSystem">
+
+     <br>
+     <label for="clientsMessages"><p class="lead">Notes</p>
+      <!-- Trigger the Create Message Modal with a button -->
+      <div class="dropdown">
+       <button type="button" class="btn btn-info btn-lg" onclick="openClientMessage()" data-toggle="modal" data-target="#ModalCreateMessages">Create Message</button>
+       <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Sort Messages By
+       </button>
+       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item"  onclick="sortByListPriority()">Priority</a>
+        <a class="dropdown-item" onclick="sortByListName()">Client's Name</a>
+        <a class="dropdown-item"  onclick="sortByListDate()">Date Created</a>
+       </div>
+      </div>
+     </label><select onchange="loadClientNotes()" class="form-control" id="clientsMessages" required>
+      <option>Select a Client</option>
+     </select>
+     <!-- Create Message Modal -->
+     <div id="ModalCreateMessages" class="modal fade" role="dialog">
+      <!-- change size -->
+      <div class="modal-dialog modal-sm">
+
+       <!-- Modal content-->
+       <div class="modal-content">
+        <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Message</h4>
+        </div>
+        <div class="modal-body">
+         <form class="form-container" onsubmit="return submitClientMessage()">
+          <h3 class="h3">Create Message</h3>
+
+          <label for="messageClient" class="form-check-label">Select Client</label><br>
+          <select id="messageClient" class="form-control" required>
+           <option>Select a Client</option>
+          </select><br>
+
+          <label for="messageBody" id="labelMessage" class="form-check-label"><em>Message</em></label>
+          <textarea class="form-control"  name="messageBody" id="messageBody" required rows="5"></textarea>
+
+          <fieldset>
+           <legend>priority</legend>
+           <div class="form-check">
+            <input class="form-check-input" type="radio" name="priorityRadio" id="priority1" value="1">
+            <label class="form-check-label" for="priority1">
+             Critical Priority
+            </label>
+           </div>
+           <div class="form-check">
+            <input class="form-check-input" type="radio" name="priorityRadio" id="priority2" value="2">
+            <label class="form-check-label" for="priority2">
+             High Priority
+            </label>
+           </div>
+           <div class="form-check disabled">
+            <input class="form-check-input" type="radio" name="priorityRadio" id="priority3" value="3">
+            <label class="form-check-label" for="priority3">
+             Low Priority
+            </label>
+           </div>
+          </fieldset>
+
+          <button type="submit" class="btn">Submit</button>
+         </form>
+        </div>
+        <div class="modal-footer">
+         <button type="button" class="btn btn-default" onclick="closeClientMessage()" data-dismiss="modal">Close</button>
+        </div>
+       </div>
+
+      </div>
+     </div>
+     <!-- View Message Modal -->
+     <div id="messagesModal" class="modal fade" role="dialog">
+      <!-- change size -->
+      <div class="modal-dialog modal-lg">
+
+       <!-- Modal content-->
+       <div class="modal-content">
+        <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Message</h4>
+        </div>
+        <div class="modal-body">
+         <p class="h6" id="MessageHead">Create Message</p>
+         <p class="lead" id="theMessage"></p>
+
+        </div>
+        <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+       </div>
+
+      </div>
+     </div>
+
+     <ul class="list-group" id="newMessages">
+     </ul>
+     <ul class="list-group" id="readMessages">
+     </ul>
+
+
+    </div>
+
+    </div>  <!-- end for main body calendar and messages support staff and client -->
+
+   <!-- main body divs manager -->
+   <div class="row">
+    <!-- div button js -->
+   <div class="col-lg-4 shadow p-3 mb-5 bg-white rounded" id="controller" >
+    <div class="col-sm-auto shadow p-3 mb-2 bg-light rounded" id="SupportedHouseController" >
+     <p class="lead">Supported House Functions</p>
+    </div>
+    <div class="col-sm-auto shadow p-3 mb-2 bg-light rounded" id="appointmentController" >
+     <p class="lead">Appointment Functions</p>
+    </div>
+    <div class="col-sm-auto shadow p-3 mb-2 bg-light rounded" id="clientController" >
+     <p class="lead">Client Functions</p>
+    </div>
+    <div class="col-sm-auto shadow p-3 mb-2 bg-light rounded" id="staffController" >
+     <p class="lead">Staff Functions</p>
+    </div>
+   </div>
+
+    <!-- div forms -->
+    <div class="col-lg shadow-sm p-3 mb-5 bg-white rounded" id="forms">
+
+     <!-- SupportedHouse forms -->
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitCreateHouseForm();return false" hidden = "true" id="createSupportHouse">
+      <!-- alert -->
+      <div class="alert alert-info" role="alert">
+       <p id="informHouse"></p>
+      </div>
+
+      <h3 class="h3">Register Supported House</h3>
+
+      <div class="form-group row">
+
+       <div class="col-md-4 mb-3">
+       <label for="houseName" class="form-check-label"><em>Enter house Name</em></label>
+       <input type="text" class="form-control" name="houseName" id="houseName" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+              title="The house name must only contain letters and be more than three and less than eight letters." required>
+       </div>
+
+       <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select the sex of the house</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="inlineRadioOptionsSex" id="supportedMale" value="Male" required>
+          <label class="form-check-label" for="supportedMale">Male</label>
+        </div>
+        <div class="form-check">
+         <input class="form-check-input" type="radio" name="inlineRadioOptionsSex" id="supportedFemale" value="Female" required>
+         <label class="form-check-label" for="supportedFemale">Female</label>
+        </div>
+        </div>
+       </fieldset>
+
+       <fieldset>
+       <div class="col-md">
+        <legend class="col-form-label"><em>Select house specialisation</em></legend>
+        <div class="form-check">
+         <input class="form-check-input" type="radio" name="inlineRadioOptionsSpec" id="General" value="General" required>
+         <label class="form-check-label" for="General">General</label>
+        </div>
+        <div class="form-check">
+         <input class="form-check-input" type="radio" name="inlineRadioOptionsSpec" id="Learning" value="Learning" required>
+         <label class="form-check-label" for="Learning">Learning</label>
+        </div>
+        <div class="form-check">
+         <input class="form-check-input" type="radio" name="inlineRadioOptionsSpec" id="Forensic" value="Forensic" required>
+         <label class="form-check-label" for="Forensic">Forensic</label>
+        </div>
+       </div>
+       </fieldset>
+
+      </div>
+
+      <div class="form-group row">
+
+       <div class="col-md-6 mb-3">
+     <label for="addressFirstLine" class="form-check-label"><em>address First Line</em></label>
+     <input type="text" class="form-control" name="addressFirstLine" id="addressFirstLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+            title="must only contain letters and be more than three and less than eight letters." required>
+       </div>
+
+       <div class="col-md-6 mb-3">
+     <label for="addressSecondLine" class="form-check-label"><em>address Second Line</em></label>
+     <input type="text" class="form-control" name="addressSecondLine" id="addressSecondLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+            title="must only contain letters and be more than three and less than eight letters." required>
+      </div>
+
+       <div class="col-md-6 mb-3">
+     <label for="country" class="form-check-label"><em>country</em></label>
+     <input type="text" class="form-control" name="country" id="country" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+            title="must only contain letters and be more than two and less than eight letters." required>
+       </div>
+
+       <div class="col-md-6 mb-3">
+     <label for="town" class="form-check-label"><em>town</em></label>
+     <input type="text" class="form-control" name="town" id="town" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+            title="must only contain letters and be more than two and less than eight letters." required>
+        </div>
+
+       <div class="col-md-6 mb-3">
+     <label for="postCode" class="form-check-label"><em>postCode</em></label>
+     <input type="text" class="form-control" name="postCode" id="postCode"
+            pattern="^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$"
+            title="must be a correctly formatted UK postcode." required>
+         </div>
+
+       <div class="col-md-6 mb-3">
+     <label for="room" class="form-check-label"><em>Number of Rooms</em></label>
+     <input type="number" class="form-control" name="room" id="room" min="1" max="5" required><br>
+      </div>
+
+     </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+
+
+    </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveHouse();return false" hidden = "true" id="removeSupportHouse">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveHouse"></p>
+       </div>
+       <h3 class="h3">Remove Support House</h3>
+
+       <div class="col-md-4 mb-3">
+       <label for="selectRemoveHouse" class="form-check-label">Select Supported House to remove</label><br>
+       <select id="selectRemoveHouse" class="form-control" required>
+        <option>Select a Supported house to remove</option>
+       </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitUpdateHouseForm();return false" hidden = "true" id="updateSupportHouse">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="updateHouse"></p>
+       </div>
+
+       <h3 class="h3">Updated Supported House</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="updateSelectRemoveHouse" class="form-check-label">Select Supported House to update</label><br>
+        <select id="updateSelectRemoveHouse" onchange="updateSupportedHouseDetails()" class="form-control" required>
+         <option>Select a Supported house to update</option>
+        </select>
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-4 mb-3">
+         <label for="updateHouseName" class="form-check-label"><em>Enter house Name</em></label>
+         <input type="text" class="form-control" name="houseName" id="updateHouseName" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+                title="The house name must only contain letters and be more than three and less than eight letters." required>
+        </div>
+
+        <fieldset>
+         <div class="col-md">
+          <legend class="col-form-label"><em>Select the sex of the house</em></legend>
+          <div class="form-check">
+           <input class="form-check-input" type="radio" name="inlineRadioOptionsSex" id="updateSupportedMale" value="Male" required>
+           <label class="form-check-label" for="updateSupportedMale">Male</label>
+          </div>
+          <div class="form-check">
+           <input class="form-check-input" type="radio" name="inlineRadioOptionsSex" id="updateSupportedFemale" value="Female" required>
+           <label class="form-check-label" for="updateSupportedFemale">Female</label>
+          </div>
+         </div>
+         </fieldset>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select house specialisation</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="updateInlineRadioOptionsSpec" id="updateGeneral" value="General" required>
+          <label class="form-check-label" for="updateGeneral">General</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="updateInlineRadioOptionsSpec" id="updateLearning" value="Learning" required>
+          <label class="form-check-label" for="updateLearning">Learning</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="updateInlineRadioOptionsSpec" id="updateForensic" value="Forensic" required>
+          <label class="form-check-label" for="updateForensic">Forensic</label>
+         </div>
+        </div>
+        </fieldset>
+
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+         <label for="updateAddressFirstLine" class="form-check-label"><em>address First Line</em></label>
+         <input type="text" class="form-control" name="addressFirstLine" id="updateAddressFirstLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+                title="must only contain letters and be more than three and less than eight letters." disabled required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="updateAddressSecondLine" class="form-check-label"><em>address Second Line</em></label>
+         <input type="text" class="form-control" name="addressSecondLine" id="updateAddressSecondLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+                title="must only contain letters and be more than three and less than eight letters." disabled required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="updateCountry" class="form-check-label"><em>country</em></label>
+         <input type="text" class="form-control" name="country" id="updateCountry" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+                title="must only contain letters and be more than two and less than eight letters." disabled required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="updateTown" class="form-check-label"><em>town</em></label>
+         <input type="text" class="form-control" name="town" id="updateTown" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+                title="must only contain letters and be more than two and less than eight letters." disabled required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="updatePostCode" class="form-check-label"><em>postCode</em></label>
+         <input type="text" class="form-control" name="postCode" id="updatePostCode"
+                pattern="^([A-Za-z][A-Ha-hJ-Yj-y]?[0-9][A-Za-z0-9]? ?[0-9][A-Za-z]{2}|[Gg][Ii][Rr] ?0[Aa]{2})$"
+                title="must be a correctly formatted UK postcode." disabled required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="updateRoom" class="form-check-label"><em>Number of Rooms</em></label>
+         <input type="number" class="form-control" name="room" id="updateRoom" min="1" max="5" required><br>
+        </div>
+
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+
+      </form>
+     </div>
+
+     <!-- Appointments forms -->
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitCreateAppointment();return false" hidden = "true" id="CreateAppointmentForm">
+     <!-- alert -->
+     <div class="alert alert-info" role="alert">
+      <p id="informAppointment"></p>
+     </div>
+     <h3 class="h3">Register Appointment</h3>
+
+     <label for="clientForAppointment" class="form-check-label">Select Client</label><br>
+     <select onchange="getAppropriateStaff()" id="clientForAppointment" class="form-control" required>
+      <option>Select a Client</option>
+     </select><br>
+
+     <label for="staffMembers" class="form-check-label">Select Staff Member</label><br>
+     <select id="staffMembers" class="form-control" required hidden="true">
+      <option>Select a Staff Member</option>
+     </select><br>
+
+     <label for="day" class="form-check-label">Select the day</label><br>
+     <select id="day" class="form-control" required>
+      <option>Select a Day</option>
+      <option>MONDAY</option>
+      <option>TUESDAY</option>
+      <option>WEDNESDAY</option>
+      <option>THURSDAY</option>
+      <option>FRIDAY</option>
+      <option>SATURDAY</option>
+      <option>SUNDAY</option>
+     </select><br>
+
+     <label for="startTime" class="form-check-label"><em>Start Time</em></label>
+     <input type="time" class="form-control" name="startTime" id="startTime" min="6:00" max="19:00" required>
+
+     <label for="endTime" class="form-check-label"><em>end Time</em></label>
+     <input type="time" class="form-control" name="endTime" id="endTime"  min="6:00" max="19:00" required><br>
+
+     <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveStaffApp();return false" hidden = "true" id="openRemoveStaffApp">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveStaffApp"></p>
+       </div>
+       <h3 class="h3">Remove a staff member's appointment.</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="staffRemoveApp" class="form-check-label">Select Staff Member</label><br>
+        <select id="staffRemoveApp" onchange="getStaffAppointments()" class="form-control" required>
+         <option>Select a Staff Member</option>
+        </select>
+       </div>
+
+       <div class="col-md-4 mb-3">
+        <label for="appToRemoveStaff" id="appToRemoveStaffLabel" class="form-check-label">Select the Appointment to remove</label><br>
+        <select id="appToRemoveStaff" class="form-control" hidden="true" required>
+         <option>Select the appointment to remove</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveClientApp();return false" hidden = "true" id="openRemoveClientApp">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveClientApp"></p>
+       </div>
+       <h3 class="h3">Remove a Client's appointment.</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="clientRemoveApp" class="form-check-label">Select Client</label><br>
+        <select id="clientRemoveApp" onchange="getClientAppointments()" class="form-control" required>
+         <option>Select a Client</option>
+        </select>
+       </div>
+
+       <div class="col-md-4 mb-3">
+        <label for="appToRemoveClient" id="appToRemoveClientLabel" class="form-check-label">Select the Appointment to remove</label><br>
+        <select id="appToRemoveClient" class="form-control" hidden="true" required>
+         <option>Select the appointment to remove</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <!-- Client forms -->
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitClientForm();return false" hidden = "true" id="createClientForm">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informClient"></p>
+       </div>
+
+       <h3 class="h3">Register Client</h3>
+
+       <div class="form-row">
+
+        <div class="col-md-4 mb-3">
+         <label for="clientSupportHouse" class="form-check-label">Select Supported House</label><br>
+         <select id="clientSupportHouse" class="form-control" required>
+          <option>Select a sex and Condition first</option>
+         </select>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientFirstName" class="form-check-label"><em>Enter First Name</em></label>
+         <input type="text" class="form-control" name="firstName" id="clientFirstName" pattern="^[a-z ,.'-]+"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="ClientLastName" class="form-check-label"><em>Enter Last Name</em></label>
+         <input type="text" class="form-control" name="ClientLastName" id="ClientLastName" pattern="^[a-z ,.'-]+"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientDOB" class="form-check-label"><em>Enter Clients Date of Birth</em></label>
+         <input type="date" class="form-control" name="clientDOB" id="clientDOB" required>
+        </div>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select the sex of the Client</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="clientGender" id="gridRadios1" value="Male" required>
+          <label class="form-check-label" for="gridRadios1">Male</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="clientGender" id="gridRadios2" value="Female" required>
+          <label class="form-check-label" for="gridRadios2">Female</label>
+         </div>
+        </div>
+        </fieldset>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select the client's specialisation</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" onchange="checkHouse()" type="radio" name="clientSpec" id="clientGeneral" value="General" required>
+          <label class="form-check-label" for="clientGeneral">General</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" onchange="checkHouse()" type="radio" name="clientSpec" id="clientLearning" value="Learning" required>
+          <label class="form-check-label"  for="clientLearning">Learning</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input"  onchange="checkHouse()" type="radio" name="clientSpec" id="clientForensic" value="Forensic" required>
+          <label class="form-check-label"  for="clientForensic">Forensic</label>
+         </div>
+        </div>
+        </fieldset>
+
+       </div>
+
+       <div class="form-row">
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsNextOfKin" class="form-check-label"><em>Clients next of kin name</em></label>
+         <input type="text" class="form-control" name="clientsNextOfKin" id="clientsNextOfKin" pattern="^[a-z ,.'-]+"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsNextOfKinNumber" class="form-check-label"><em>Client's Next of Kin contact number</em></label>
+         <input type="number" class="form-control" name="clientsNextOfKinNumber" id="clientsNextOfKinNumber"
+                pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$"
+                title="The phone number must be in the correct format for a UK Number." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsDiagnosis" class="form-check-label"><em>client's Diagnosis</em></label>
+         <input type="text" class="form-control" name="clientsDiagnosis" id="clientsDiagnosis" pattern="^[a-z ,.'-]+$"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsNHSnumber" class="form-check-label"><em>client's NHS Number</em></label>
+         <input type="number" class="form-control" name="clientsNHSnumber" id="clientsNHSnumber" pattern="^\s*[a-zA-Z]{2}(?:\s*\d\s*){6}[a-zA-Z]?\s*$"
+                title="must be a correctly formatted NHS Number." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsPassword" class="form-check-label"><em>client's password</em></label>
+         <input type="password" class="form-control" name="clientsPassword" id="clientsPassword" minlength="3" maxlength="8" required>
+        </div>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitChangeClientHouse();return false" hidden = "true" id="openChangeHouseForm">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informClientChangeHouse"></p>
+       </div>
+       <h3 class="h3">Change Client's Supported House</h3>
+
+       <label for="clientForChangeHouse" class="form-check-label">Select Client</label><br>
+       <select onchange="getNewClientsHouse()" id="clientForChangeHouse" class="form-control" required>
+        <option>Select a Client</option>
+       </select><br>
+
+       <div class="col-md-4 mb-3">
+        <label for="clientNewSupportHouse" class="form-check-label">Select Clients new support house</label><br>
+        <select id="clientNewSupportHouse" class="form-control" required>
+         <option>Select a New supported house</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveClient();return false" hidden = "true" id="openRemoveClient">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveClient"></p>
+       </div>
+       <h3 class="h3">Remove a client.</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="clientRemove" class="form-check-label">Select client</label><br>
+        <select id="clientRemove" class="form-control" required>
+         <option>Select a client Member</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitClientDetails();return false" hidden = "true" id="createClientDetails">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informClientDetails"></p>
+       </div>
+
+       <h3 class="h3">Display/Edit a client's details</h3>
+
+       <div class="form-row">
+        <div class="col-md-4 mb-3">
+         <label for="clientDetails" class="form-check-label">Select client</label><br>
+         <select onchange="onClientSelectEdit()" id="clientDetails" class="form-control" required>
+          <option>Select a client</option>
+         </select>
+        </div>
+       </div>
+
+       <div class="form-row">
+
+        <div class="col-md-4 mb-3">
+         <label for="clientEditSupportHouse" class="form-check-label">Client's Supported House</label><br>
+         <input type="text" class="form-control" name="clientEditSupportHouse" id="clientEditSupportHouse" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientEditFirstName" class="form-check-label"><em>Client's First Name</em></label>
+         <input type="text" class="form-control" name="clientEditFirstName" id="clientEditFirstName" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientEditLastName" class="form-check-label"><em>Client's Last Name</em></label>
+         <input type="text" class="form-control" name="clientEditLastName" id="clientEditLastName" pattern="/^[a-z ,.'-]+$/i"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientEditDOB" class="form-check-label"><em>Client's Date of Birth</em></label>
+         <input type="date" class="form-control" name="clientEditDOB" id="clientEditDOB" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientsGender" class="form-check-label"><em>Client's Gender</em></label>
+         <input type="text" class="form-control" name="clientsGender" id="clientsGender" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="clientsSpecialisation" class="form-check-label"><em>Client's specialisation</em></label>
+         <input type="text" class="form-control" name="clientsSpecialisation" id="clientsSpecialisation" disabled>
+        </div>
+
+       </div>
+
+       <div class="form-row">
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsEditNextOfKin" class="form-check-label"><em>Client's next of kin name</em></label>
+         <input type="text" class="form-control" name="clientsEditNextOfKin" id="clientsEditNextOfKin" pattern="/^[a-z ,.'-]+$/i"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsEditNextOfKinNumber" class="form-check-label"><em>Clients Next of Kin contact number</em></label>
+         <input type="number" class="form-control" name="clientsEditNextOfKinNumber" id="clientsEditNextOfKinNumber"
+                pattern="^(?:(?:\(?(?:0(?:0|11)\)?[\s-]?\(?|\+)44\)?[\s-]?(?:\(?0\)?[\s-]?)?)|(?:\(?0))(?:(?:\d{5}\)?[\s-]?\d{4,5})|(?:\d{4}\)?[\s-]?(?:\d{5}|\d{3}[\s-]?\d{3}))|(?:\d{3}\)?[\s-]?\d{3}[\s-]?\d{3,4})|(?:\d{2}\)?[\s-]?\d{4}[\s-]?\d{4}))(?:[\s-]?(?:x|ext\.?|\#)\d{3,4})?$"
+                title="must be a correctly formatted phone number." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsEditDiagnosis" class="form-check-label"><em>client's Diagnosis</em></label>
+         <input type="text" class="form-control" name="clientsEditDiagnosis" id="clientsEditDiagnosis" minlength="3" maxlength="8" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsEditNHSnumber" class="form-check-label"><em>client's NHS Number</em></label>
+         <input type="number" class="form-control" name="clientsEditNHSnumber" id="clientsEditNHSnumber" disabled>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="clientsEditUsername" class="form-check-label"><em>client's Username</em></label>
+         <input type="text" class="form-control" name="clientsEditUsername" id="clientsEditUsername" disabled>
+        </div>
+
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" hidden = "true" id="DisplayClientAppDetails">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informClientDisplayAppDetails"></p>
+       </div>
+
+       <h3 class="h3">Display client's Appointments</h3>
+
+       <div class="form-row">
+        <div class="col-md-4 mb-3">
+         <label for="clientAppDetails" class="form-check-label">Select a client</label><br>
+         <select onchange="onClientSelectDisplayApp()" id="clientAppDetails" class="form-control" required>
+          <option>Select a client</option>
+         </select>
+        </div>
+       </div>
+       <div class="form-row">
+        <div class="col-12 col-md-8" id='clientCalendar'></div>
+       </div>
+
+      </form>
+     </div>
+
+     <!-- Staff forms -->
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitStaffForm();return false" hidden = "true" id="createStaffForm">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informStaff"></p>
+       </div>
+
+       <h3 class="h3">Register Staff Member</h3>
+
+       <div class="form-group row">
+
+        <div class="col-md-4 mb-3">
+         <label for="staffFirstName" class="form-check-label"><em>Enter First Name</em></label>
+         <input type="text" class="form-control" name="staffLastName" id="staffFirstName"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="staffLastName" class="form-check-label"><em>Enter Last Name</em></label>
+         <input type="text" class="form-control" name="staffLastName" id="staffLastName"
+                title="must be a correctly formatted Name." required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="staffDOB" class="form-check-label"><em>Enter staff member'ss Date of Birth</em></label>
+         <input type="date" class="form-control" name="clientDOB" id="staffDOB" required>
+        </div>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select the sex of the Client</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffGender" id="staffGenderMale" value="Male" required>
+          <label class="form-check-label" for="staffGenderMale">Male</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffGender" id="staffGenderFemale" value="Female" required>
+          <label class="form-check-label" for="staffGenderFemale">Female</label>
+         </div>
+        </div>
+        </fieldset>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Select the Staff Members's specialisation</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffSpec" id="staffGeneral" value="General" required>
+          <label class="form-check-label" for="staffGeneral">General</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffSpec" id="staffLearning" value="Learning" required>
+          <label class="form-check-label" for="staffLearning">Learning</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffSpec" id="staffForensic" value="Forensic" required>
+          <label class="form-check-label" for="staffForensic">Forensic</label>
+         </div>
+        </div>
+        </fieldset>
+
+        <fieldset>
+        <div class="col-md">
+         <legend class="col-form-label"><em>Is the Staff Member a Manager.</em></legend>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffIsManager" id="staffManager" value="true" required>
+          <label class="form-check-label" for="staffManager">true</label>
+         </div>
+         <div class="form-check">
+          <input class="form-check-input" type="radio" name="staffIsManager" id="staffSupport" value="false" required>
+          <label class="form-check-label" for="staffSupport">false</label>
+         </div>
+        </div>
+        </fieldset>
+
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+         <label for="staffAddressFirstLine" class="form-check-label"><em>address First Line</em></label>
+         <input type="text" class="form-control" name="staffAddressFirstLine" id="staffAddressFirstLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+                title="must only contain letters and be more than three and less than eight letters." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffAddressSecondLine" class="form-check-label"><em>address Second Line</em></label>
+         <input type="text" class="form-control" name="staffAddressSecondLine" id="staffAddressSecondLine" pattern="[a-zA-Z,]*" maxlength="8" minlength="3"
+                title="must only contain letters and be more than three and less than eight letters." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffCountry" class="form-check-label"><em>country</em></label>
+         <input type="text" class="form-control" name="staffCountry" id="staffCountry" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+                title="must only contain letters and be more than two and less than eight letters." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffTown" class="form-check-label"><em>town</em></label>
+         <input type="text" class="form-control" name="staffTown" id="staffTown" pattern="[a-zA-Z,]*" maxlength="8" minlength="2"
+                title="must only contain letters and be more than two and less than eight letters." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffPostCode" class="form-check-label"><em>postCode</em></label>
+         <input type="text" class="form-control" name="staffPostCode" id="staffPostCode" min="1" max="5" required>
+        </div>
+
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+         <label for="staffNin" class="form-check-label"><em>staff's National insurance Number</em></label>
+         <input type="number" class="form-control" name="staffNin" id="staffNin" pattern="^([a-zA-Z]){2}( )?([0-9]){2}( )?([0-9]){2}( )?([0-9]){2}( )?([a-zA-Z]){1}?$"
+                title="The National insurance Number must be in the correct format." required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffPassword" class="form-check-label"><em>client's password</em></label>
+         <input type="password" class="form-control" name="staffPassword" id="staffPassword" min="3" maxlength="8" required>
+        </div>
+
+       </div>
+
+
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveStaff();return false" hidden = "true" id="openRemoveStaff">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveStaff"></p>
+       </div>
+       <h3 class="h3">Remove a staff member.</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="staffRemove" class="form-check-label">Select Staff Member</label><br>
+        <select id="staffRemove" class="form-control" required>
+         <option>Select a Staff Member</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitRemoveStaffManager();return false" hidden = "true" id="openRemoveStaffManager">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informRemoveStaffManager"></p>
+       </div>
+       <h3 class="h3">Remove a staff manager.</h3>
+
+       <div class="col-md-4 mb-3">
+        <label for="staffManagerRemove" class="form-check-label">Select Staff Manager</label><br>
+        <select id="staffManagerRemove" class="form-control" required>
+         <option>Select a Staff Manager</option>
+        </select>
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" onsubmit="submitStaffDetails();return false" hidden = "true" id="createStaffDetails">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informStaffDetails"></p>
+       </div>
+
+       <h3 class="h3">Display/Edit a staff's details</h3>
+
+       <div class="form-row">
+        <div class="col-md-4 mb-3">
+         <label for="staffDetails" class="form-check-label">Staff Member</label><br>
+         <select onchange="onStaffSelectEdit()" id="staffDetails" class="form-control" required>
+          <option>Select a Staff Member</option>
+         </select>
+        </div>
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-4 mb-3">
+         <label for="staffEditFirstName" class="form-check-label"><em>Staff Member's First Name</em></label>
+         <input type="text" class="form-control" name="staffEditLastName" id="staffEditFirstName" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="staffEditLastName" class="form-check-label"><em>Staff Member's Last Name</em></label>
+         <input type="text" class="form-control" name="staffEditLastName" id="staffEditLastName" required>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="staffEditDOB" class="form-check-label"><em>Staff Member's Date of Birth</em></label>
+         <input type="date" class="form-control" name="staffEditDOB" id="staffEditDOB" disabled>
+        </div>
+
+        <div class="col-md-4 mb-3">
+         <label for="staffEditGender" class="form-check-label"><em>Staff Member's Gender</em></label>
+         <input type="text" class="form-control" name="staffEditGender" id="staffEditGender" disabled>
+        </div>
+
+
+        <div class="col-md-4 mb-3">
+         <label for="staffEditSpec" class="form-check-label"><em>Staff Member's specialisation</em></label>
+         <input type="text" class="form-control" name="staffEditSpec" id="staffEditSpec" required disabled>
+        </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditAddressFirstLine" class="form-check-label"><em>Staff Member's address First Line</em></label>
+         <input type="text" class="form-control" name="staffEditAddressFirstLine" id="staffEditAddressFirstLine" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditAddressSecondLine" class="form-check-label"><em>Staff Member's address Second Line</em></label>
+         <input type="text" class="form-control" name="staffEditAddressSecondLine" id="staffEditAddressSecondLine" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditCountry" class="form-check-label"><em>Staff Member's country</em></label>
+         <input type="text" class="form-control" name="staffEditCountry" id="staffEditCountry" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditTown" class="form-check-label"><em> Staff Member'stown</em></label>
+         <input type="text" class="form-control" name="staffEditTown" id="staffEditTown" required>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditPostCode" class="form-check-label"><em>Staff Member's postCode</em></label>
+         <input type="text" class="form-control" name="staffEditPostCode" id="staffEditPostCode" required>
+        </div>
+
+       </div>
+
+       <div class="form-group row">
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditNin" class="form-check-label"><em>Staff Member's National insurance Number</em></label>
+         <input type="number" class="form-control" name="staffEditNin" id="staffEditNin" disabled>
+        </div>
+
+        <div class="col-md-6 mb-3">
+         <label for="staffEditUsername" class="form-check-label"><em>Staff Member's Username</em></label>
+         <input type="text" class="form-control" name="staffEditUsername" id="staffEditUsername" disabled>
+        </div>
+
+       </div>
+
+       <button type="submit" class="btn btn-primary">Submit</button>
+
+       </div>
+
+      </form>
+     </div>
+
+     <div>
+      <form class="p-3 shadow mb-2 bg-light text-dark" hidden = "True" id="DisplayStaffAppDetails">
+       <!-- alert -->
+       <div class="alert alert-info" role="alert">
+        <p id="informStaffDisplayAppDetails"></p>
+       </div>
+
+       <h3 class="h3">Display staff member's Appointments</h3>
+
+       <div class="form-row">
+        <div class="col-md-4 mb-3">
+         <label for="staffAppDetails" class="form-check-label">Select staff member</label><br>
+         <select onchange="onStaffSelectDisplayApp()" id="staffAppDetails" class="form-control" required>
+          <option>Select a staff member</option>
+         </select>
+        </div>
+       </div>
+       <div class="form-row">
+        <div class="col-12 col-md-8" id='staffCalendar'></div>
+       </div>
+
+      </form>
+     </div>
+
+    </div>
+
+   </div> <!-- end for main manger div row -->
+
+  </div> <!-- end for container-fluid -->
+ </body>
+</html>
