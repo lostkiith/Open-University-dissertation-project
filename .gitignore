@@ -27,3 +27,6 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+/src/main/resources/static/CSS/
+/src/main/resources/static/fullcalendar/
+/src/main/resources/static/JS/
