@@ -97,7 +97,11 @@ public class ClientController {
 
     @RequestMapping(value = "/getClients", method = RequestMethod.GET, produces = "application/json")
     List<Client> getClients() {
-        return new ArrayList<>(clients.findAll());
+        if (clients.count() > 0) {
+            return new ArrayList<>(clients.findAll());
+        } else {
+            throw new NoSuchElementException("No Clients stored.");
+        }
     }
 
     /**

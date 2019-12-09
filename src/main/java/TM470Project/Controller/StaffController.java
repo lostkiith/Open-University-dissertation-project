@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 import static TM470Project.Controller.CharityController.getUserName;
 
@@ -125,24 +127,32 @@ public class StaffController {
                 (() -> new NoSuchElementException("No Staff member matching the provided National Insurance number found."));
     }
 
+    /**
+     * returns a collection of all staff members objects.
+     *
+     * @return A ArrayList of staff objects.
+     */
     @RequestMapping(value = "/getStaffMembers", method = RequestMethod.GET, produces = "application/json")
     List<SupportStaffMember> getStaffMembers() {
-        List<SupportStaffMember> returnStaff = new LinkedList<>();
-        for(Staff sm: staffMembers.findAll()) {
-            if(sm instanceof SupportStaffMember)
-            {
+        List<SupportStaffMember> returnStaff = new ArrayList<>();
+        for (Staff sm : staffMembers.findAll()) {
+            if (sm instanceof SupportStaffMember) {
                 returnStaff.add((SupportStaffMember) sm);
             }
         }
         return returnStaff;
     }
 
+    /**
+     * returns a collection of all Manager objects.
+     *
+     * @return A ArrayList of Manager objects.
+     */
     @RequestMapping(value = "/getStaffManagers", method = RequestMethod.GET, produces = "application/json")
     List<Manager> getStaffManagers() {
-        List<Manager> returnStaff = new LinkedList<>();
-        for(Staff sm: staffMembers.findAll()) {
-            if(sm instanceof Manager)
-            {
+        List<Manager> returnStaff = new ArrayList<>();
+        for (Staff sm : staffMembers.findAll()) {
+            if (sm instanceof Manager) {
                 returnStaff.add((Manager) sm);
             }
         }
