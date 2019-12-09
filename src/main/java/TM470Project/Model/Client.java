@@ -2,7 +2,6 @@ package TM470Project.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
@@ -87,6 +86,11 @@ public class Client extends Person implements AppointmentManager {
     }
 
 
+    /**
+     * returns a collection of all Appointment objects
+     *
+     * @return a LinkedList of appointment objects.
+     */
     public LinkedList<Appointment> getAppointments() {
         return appointments;
     }
@@ -101,20 +105,27 @@ public class Client extends Person implements AppointmentManager {
     /**
      * return the supported house instances house name.
      */
-    String getCurrentSupportedHouse() { 
+    String getCurrentSupportedHouse() {
         return currentSupportedHouse != null ? currentSupportedHouse.getHouseName() : "no current supported house assigned.";
     }
 
-    public void createNote(String note, int priority)
-    {
-        notes.add(Note.createNote(note,priority));
+    /**
+     * create a note related to the client object.
+     *
+     * @param note     the String representation of the note.
+     * @param priority the integer representing the priority.
+     */
+    public void createNote(String note, int priority) {
+        notes.add(Note.createNote(note, priority));
     }
 
+    /**
+     * @param noteToFind the String representing the note to find.
+     * @return the object with the matching String.
+     */
     public Note getNote(String noteToFind) {
-        for (Note n : notes)
-        {
-            if (n.getNote().equals(noteToFind))
-            {
+        for (Note n : notes) {
+            if (n.getNote().equals(noteToFind)) {
                 return n;
             }
         }
