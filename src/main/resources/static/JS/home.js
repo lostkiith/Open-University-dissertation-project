@@ -1727,7 +1727,7 @@ function updateSupportedHouseDetails() {
 
 }
 
-//utility
+//utility functions
 function ageIseighteen(id) {
     let Bdate = document.getElementById(id).value;
     let Bday = +new Date(Bdate);
