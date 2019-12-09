@@ -1,6 +1,8 @@
 package TM470Project.Controller;
 
-import TM470Project.Model.*;
+import TM470Project.Model.AreaOfExperience;
+import TM470Project.Model.Client;
+import TM470Project.Model.Sex;
 import TM470Project.Repositories.ClientRepository;
 import TM470Project.Repositories.StaffRepository;
 import org.jetbrains.annotations.Contract;
@@ -58,8 +60,8 @@ public class ClientController {
     @CrossOrigin
     @RequestMapping(value = "/registerClient", method = RequestMethod.POST)
     public String registerClient(@RequestParam String firstName, String lastName, Sex sex, @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateOfBirth,
-                               AreaOfExperience generalCondition, String nextOfKin, Long nextOfKinNumber, String diagnosis,
-                               Long nationalHealthServiceNumber, String password) throws IllegalArgumentException {
+                                 AreaOfExperience generalCondition, String nextOfKin, Long nextOfKinNumber, String diagnosis,
+                                 Long nationalHealthServiceNumber, String password) throws IllegalArgumentException {
         try {
             this.findClient(nationalHealthServiceNumber);
             throw new IllegalArgumentException("Client already exists!");
@@ -114,18 +116,18 @@ public class ClientController {
 
     @CrossOrigin
     @RequestMapping(value = "/createNote", method = RequestMethod.POST)
-    public void createNote(Long nationalHealthServiceNumber,String note, int priority) {
+    public void createNote(Long nationalHealthServiceNumber, String note, int priority) {
         Long ID = getLoggedInID();
         Client c = clients.findClientByNationalHealthServiceNumber(nationalHealthServiceNumber).orElseThrow
-            (() -> new NoSuchElementException("No staff member matching the provided national insurance number has been located."));
-        c.createNote(note,priority);
+                (() -> new NoSuchElementException("No staff member matching the provided national insurance number has been located."));
+        c.createNote(note, priority);
         c.getNote(note).hasBeenReadyBy(ID);
         clients.save(c);
     }
 
     @CrossOrigin
     @RequestMapping(value = "/noteHasBeenReadBy", method = RequestMethod.POST)
-    public void noteHasBeenReadBy(Long nationalHealthServiceNumber,String note) {
+    public void noteHasBeenReadBy(Long nationalHealthServiceNumber, String note) {
         Long ID = getLoggedInID();
         Client c = clients.findClientByNationalHealthServiceNumber(nationalHealthServiceNumber).orElseThrow
                 (() -> new NoSuchElementException("No staff member matching the provided national insurance number has been located."));
