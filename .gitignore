@@ -30,3 +30,8 @@ HELP.md
 /src/main/resources/static/CSS/
 /src/main/resources/static/fullcalendar/
 /.mvn/
+/src/main/resources/static/JS/bootstrap.min.js
+/src/main/resources/static/JS/jquery-3.4.1.js
+/src/main/resources/static/JS/moment.min.js
+/src/main/resources/static/JS/tooltip.min.js
+/src/main/resources/static/JS/popper.min.js

@@ -1742,12 +1742,7 @@ function populateClientList(id) {
     $.get("http://localhost:8080/Charity/getSupportWorkersClients/",
         function (data) {
             clients = data;
-            for (let i = 0; i < data.length; i++) {
-                option = document.createElement('option');
-                option.value = JSON.stringify(data[i]);
-                option.text = data[i].firstName + " " + data[i].lastName;
-                select.add(option);
-            }
+            createMenu(data, option, select);
         }
     ).fail(function (data) {
         alert(data.message);
@@ -1786,6 +1781,15 @@ function populateManagerList(id, inform) {
 
 }
 
+function createMenu(data, option, select) {
+    for (let i = 0; i < data.length; i++) {
+        option = document.createElement('option');
+        option.value = JSON.stringify(data[i]);
+        option.text = data[i].firstName + " " + data[i].lastName;
+        select.add(option);
+    }
+}
+
 function populateStaffList(id) {
     let select, option;
     let staff;
@@ -1793,12 +1797,7 @@ function populateStaffList(id) {
     $.get("http://localhost:8080/Staff/getStaffMembers/",
         function (data) {
             staff = data;
-            for (let i = 0; i < data.length; i++) {
-                option = document.createElement('option');
-                option.value = JSON.stringify(data[i]);
-                option.text = data[i].firstName + " " + data[i].lastName;
-                select.add(option);
-            }
+            createMenu(data, option, select);
         }
     ).fail(function (data) {
         alert(data.message);
@@ -1815,12 +1814,7 @@ function populateClientListManager(id) {
     $.get("http://localhost:8080/Client/getClients/",
         function (data) {
             clients = data;
-            for (let i = 0; i < data.length; i++) {
-                option = document.createElement('option');
-                option.value = JSON.stringify(data[i]);
-                option.text = data[i].firstName + " " + data[i].lastName;
-                select.add(option);
-            }
+            createMenu(data, option, select);
         }
     ).fail(function (data) {
         alert(data.message);
