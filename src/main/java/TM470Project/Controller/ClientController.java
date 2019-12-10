@@ -100,7 +100,7 @@ public class ClientController {
         if (clients.count() > 0) {
             return new ArrayList<>(clients.findAll());
         } else {
-            throw new NoSuchElementException("No Clients stored.");
+            throw new NoSuchElementException("No current Clients.");
         }
     }
 
