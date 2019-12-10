@@ -17,7 +17,7 @@ function openCreateAppointmentForm() {
     document.getElementById("informAppointment").scrollIntoView();
 
     //populate list of clients.
-    populateClientListManager("clientForAppointment");
+    populateClientListManager("clientForAppointment", "informAppointment");
 }
 
 function getAppropriateStaff() {
@@ -246,7 +246,7 @@ function openRemoveClientApp() {
 
     changeForm("openRemoveClientApp");
 
-    populateClientListManager("clientRemoveApp");
+    populateClientListManager("clientRemoveApp", "informRemoveClientApp");
     document.getElementById("informRemoveClientApp").scrollIntoView();
 
 }
@@ -478,7 +478,7 @@ function openRemoveClient() {
     removeSelectItems("clientRemove");
     $("#openRemoveClient *").val("");
     changeForm("openRemoveClient");
-    populateClientListManager("clientRemove");
+    populateClientListManager("clientRemove", "informRemoveClient");
     document.getElementById("informRemoveClient").scrollIntoView();
 
 }
@@ -545,7 +545,7 @@ function openDisplayClientsDetails() {
     removeSelectItems("clientDetails");
     $("#createClientDetails *").val("");
     changeForm("createClientDetails");
-    populateClientListManager("clientDetails");
+    populateClientListManager("clientDetails", "informClientDetails");
     document.getElementById("informClientDetails").scrollIntoView();
 }
 
@@ -582,7 +582,7 @@ function submitClientDetails() {
             document.getElementById("informClientDetails").innerText = "Client's detail have been updated";
             removeSelectItems("clientDetails");
             $("#createClientDetails *").val("");
-            populateClientListManager("clientDetails");
+            populateClientListManager("clientDetails", "informClientDetails");
         }).fail(function (data) {
         document.getElementById("informClientDetails").innerText = data.responseJSON.message;
     });
@@ -598,7 +598,7 @@ function openDisplayClientsApp() {
     }
     $("#DisplayClientAppDetails *").val("");
     changeForm("DisplayClientAppDetails");
-    populateClientListManager("clientAppDetails");
+    populateClientListManager("clientAppDetails", "informClientDisplayAppDetails");
     document.getElementById("informClientDisplayAppDetails").scrollIntoView();
 
     let calendarEl = document.getElementById('clientCalendar');
@@ -1037,7 +1037,7 @@ function openChangeHouseForm() {
     removeSelectItems("clientForChangeHouse");
     $("#createClientForm *").val("");
     changeForm("openChangeHouseForm");
-    populateClientListManager("clientForChangeHouse");
+    populateClientListManager("clientForChangeHouse", "informClientChangeHouse");
 
     document.getElementById("informClientChangeHouse").scrollIntoView();
 }

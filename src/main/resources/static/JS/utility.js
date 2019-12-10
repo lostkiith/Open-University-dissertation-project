@@ -78,7 +78,7 @@ function populateStaffList(id) {
     });
 }
 
-function populateClientListManager(id) {
+function populateClientListManager(id, infoID) {
     let select, option;
     let clients;
     select = document.getElementById(id);
@@ -88,7 +88,7 @@ function populateClientListManager(id) {
             createMenu(data, option, select);
         }
     ).fail(function (data) {
-        document.getElementById("informAppointment").innerText = data.responseJSON.message;
+        document.getElementById(infoID).innerText = data.responseJSON.message;
     });
     $(document).ready(function () {
         $('#' + id).select2();
