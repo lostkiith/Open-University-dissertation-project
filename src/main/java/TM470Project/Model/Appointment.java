@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
 import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 /**
@@ -27,7 +27,7 @@ public class Appointment {
     private Client client;
     @DBRef
     private SupportStaffMember staffMember;
-    private LinkedList<AppointmentMeeting> appointmentMeetings;
+    private Collection<AppointmentMeeting> appointmentMeetings;
 
     @Contract(pure = true)
     private Appointment(@NotNull DayOfWeek day,@NotNull LocalTime startTime,@NotNull LocalTime endTime,@NotNull Client client,@NotNull SupportStaffMember staffMember) {
@@ -36,7 +36,7 @@ public class Appointment {
         this.endTime = endTime;
         this.client = client;
         this.staffMember = staffMember;
-        appointmentMeetings = new LinkedList<>();
+        appointmentMeetings = new HashSet<>();
     }
 
     /**

@@ -12,7 +12,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 
 /**
@@ -34,7 +35,7 @@ public class Client extends Person implements AppointmentManager {
     @DBRef(lazy = true)
     private SupportedHouse currentSupportedHouse;
     @JsonIgnore
-    private LinkedList<Appointment> appointments;
+    private Collection<Appointment> appointments;
     private ArrayList<Note> notes;
 
 
@@ -47,7 +48,7 @@ public class Client extends Person implements AppointmentManager {
         this.nextOfKinNumber = nextOfKinNumber;
         Diagnosis = diagnosis;
         this.nationalHealthServiceNumber = nationalHealthServiceNumber;
-        appointments = new LinkedList<>();
+        appointments = new HashSet<>();
         notes = new ArrayList<>();
     }
 
@@ -91,7 +92,7 @@ public class Client extends Person implements AppointmentManager {
      *
      * @return a LinkedList of appointment objects.
      */
-    public LinkedList<Appointment> getAppointments() {
+    public Collection<Appointment> getAppointments() {
         return appointments;
     }
 

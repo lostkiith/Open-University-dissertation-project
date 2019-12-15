@@ -10,7 +10,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Represents an Staff member with the responsibility of supporting clients.
@@ -23,12 +24,12 @@ import java.util.LinkedList;
 @Data
 public class SupportStaffMember extends Staff implements AppointmentManager {
     @JsonIgnore
-    private LinkedList<Appointment> appointments;
+    private Collection<Appointment> appointments;
 
     private SupportStaffMember(@NotNull String firstName,@NotNull String lastName,@NotNull Sex sex,@NotNull LocalDate dateOfBirth,@NotNull Address address,@NotNull Long ninNumber,
                                @NotNull AreaOfExperience areaOfExperience,@NotNull String username,@NotNull String password) {
         super(firstName, lastName, sex, dateOfBirth, address, ninNumber, areaOfExperience, username, password);
-        appointments = new LinkedList<>();
+        appointments = new HashSet<>();
     }
 
     /**
@@ -65,9 +66,10 @@ public class SupportStaffMember extends Staff implements AppointmentManager {
 
     /**
      * returns a linklist of the support members appointments.
+     *
      * @return the LinkedList of appointment objects.
      */
-    public LinkedList<Appointment> getAppointments() {
+    public Collection<Appointment> getAppointments() {
         return appointments;
     }
 }

@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Represents an Supported House managed by the charity.
@@ -21,7 +23,7 @@ public class SupportedHouse {
     private Sex gender;
     private AreaOfExperience specificCondition;
     private Address address;
-    private ArrayList<Room> rooms;
+    private Collection<Room> rooms;
 
 
     private SupportedHouse(@NotNull String houseName, @NotNull Sex gender, @NotNull AreaOfExperience specificCondition, @NotNull Address address, int roomNumber) {
@@ -29,7 +31,7 @@ public class SupportedHouse {
         this.gender = gender;
         this.specificCondition = specificCondition;
         this.address = address;
-        rooms = new ArrayList<>();
+        rooms = new HashSet<>();
         for (int i = 0; i < roomNumber; i++) {
             rooms.add(new Room(i + 1));
         }
