@@ -21,7 +21,9 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Represents the overall charity.
@@ -369,30 +371,39 @@ public class CharityController {
 
     /**
      * check if the clients belonging to the signed logged in user have missed three or more appointments in a row.
+     *
      * @return a LinkedList of the client that has missed their last three appointments.
      */
     @RequestMapping(value = "/behavioralSignsMissedAppAll", method = RequestMethod.GET)
-    List<Client> behavioralSignsMissedAppAll() {
+    public List<Client> behavioralSignsMissedAppAll() {
 
         List<Client> clientsApp = getSupportWorkersClients();
         List<AppointmentMeeting> allAppointmentMeetings = new ArrayList<>();
         List<Client> returnClient = new ArrayList<>();
-        int missAppointment;
+        AtomicInteger missAppointment = new AtomicInteger();
 
-        for (Client c: clientsApp) {
-            missAppointment = 0;
+        for (Client c : clientsApp) {
+            missAppointment.set(0);
             allAppointmentMeetings.clear();
             for (Appointment app : c.getAppointments()) {
                 allAppointmentMeetings.addAll(app.getAppointmentMeetings());
             }
             if (allAppointmentMeetings.size() > 2) {
                 allAppointmentMeetings.sort(Comparator.comparing(AppointmentMeeting::getDate).reversed());
-                for (int i = 0; i < 3; i++) {
-                    if (allAppointmentMeetings.get(i).getCancelled())
-                        missAppointment++;
-                    if (missAppointment == 3)
-                        returnClient.add(c);
-                }
+                IntStream.rangeClosed(1, 3)
+                        .forEach((x) -> {
+                            if (allAppointmentMeetings.get(x).getCancelled())
+                                missAppointment.getAndIncrement();
+                            if (missAppointment.get() == 3)
+                                returnClient.add(c);
+                        });
+                //testing lambdas
+                //for (int i = 0; i < 3; i++) {
+                //    if (allAppointmentMeetings.get(i).getCancelled())
+                //       missAppointment.getAndIncrement();
+                //    if (missAppointment.get() == 3)
+                //       returnClient.add(c);
+                //  }
             }else{
                 throw new IndexOutOfBoundsException("Not enough appointment meetings for behavioral checking.");
             }
