@@ -397,13 +397,6 @@ public class CharityController {
                             if (missAppointment.get() == 3)
                                 returnClient.add(c);
                         });
-                //testing lambdas
-                //for (int i = 0; i < 3; i++) {
-                //    if (allAppointmentMeetings.get(i).getCancelled())
-                //       missAppointment.getAndIncrement();
-                //    if (missAppointment.get() == 3)
-                //       returnClient.add(c);
-                //  }
             }else{
                 throw new IndexOutOfBoundsException("Not enough appointment meetings for behavioral checking.");
             }

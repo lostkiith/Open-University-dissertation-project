@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.stream.IntStream;
 
 /**
  * Represents an Supported House managed by the charity.
@@ -32,9 +33,10 @@ public class SupportedHouse {
         this.specificCondition = specificCondition;
         this.address = address;
         rooms = new HashSet<>();
-        for (int i = 0; i < roomNumber; i++) {
-            rooms.add(new Room(i + 1));
-        }
+        IntStream.rangeClosed(1, roomNumber)
+                .forEach(i ->
+                        rooms.add(new Room(i))
+                );
     }
 
     //needed for the spring Database to work.
