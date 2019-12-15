@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -36,7 +35,7 @@ public class Client extends Person implements AppointmentManager {
     private SupportedHouse currentSupportedHouse;
     @JsonIgnore
     private Collection<Appointment> appointments;
-    private ArrayList<Note> notes;
+    private Collection<Note> notes;
 
 
     private Client(@NotNull String firstName,@NotNull String lastName,@NotNull Sex sex,@NotNull LocalDate dateOfBirth,
@@ -49,7 +48,7 @@ public class Client extends Person implements AppointmentManager {
         Diagnosis = diagnosis;
         this.nationalHealthServiceNumber = nationalHealthServiceNumber;
         appointments = new HashSet<>();
-        notes = new ArrayList<>();
+        notes = new HashSet<>();
     }
 
     /**
