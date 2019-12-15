@@ -216,7 +216,7 @@ public class CharityController {
      * @return all appointments linked to the support worker.
      */
     @RequestMapping(value = "/getAppointments", method = RequestMethod.GET, produces = "application/json")
-    LinkedList<Appointment> getAppointments() {
+    Collection<Appointment> getAppointments() {
         Long ID;
         ID = getLoggedInID();
         String userRole = CharityController.getLoggedInRole();
@@ -225,10 +225,10 @@ public class CharityController {
             SupportStaffMember sm1 = (SupportStaffMember) this.staffMembers.findByNinNumber(ID).orElseThrow
                     (() -> new NoSuchElementException("No staff member matching the provided national insurance number has been located."));
             return sm1.getAppointments();
-        }else if(userRole.equals("ROLE_CLIENT")) {
+        } else if (userRole.equals("ROLE_CLIENT")) {
             Client c1 = this.clients.findClientByNationalHealthServiceNumber(ID).orElseThrow
                     (() -> new NoSuchElementException("No staff member matching the provided national insurance number has been located."));
-            LinkedList<Appointment> app = (LinkedList<Appointment>) c1.getAppointments().clone();
+            HashSet<Appointment> app = new HashSet<>(c1.getAppointments());
             app.forEach(appointment -> appointment.getAppointmentMeetings().forEach(appointmentMeeting -> appointmentMeeting.setNotes("")));
             app.forEach(appointment -> appointment.getStaffMemberObject().setAddress(null));
             app.forEach(appointment -> appointment.getStaffMemberObject().setUsername(""));
@@ -239,21 +239,20 @@ public class CharityController {
 
     /**
      * get a list of appointments for a specific client or staff member
+     *
      * @param ID the Nim or NHS Number of the staff member or client.
-     * @return  the list of appointments.
+     * @return the list of appointments.
      */
     @RequestMapping(value = "/getAppointmentsFor", method = RequestMethod.GET, produces = "application/json")
-    LinkedList<Appointment> getAppointmentsFor(Long ID) {
+    Collection<Appointment> getAppointmentsFor(Long ID) {
 
         if (this.staffMembers.findByNinNumber(ID).isPresent()) {
             SupportStaffMember sm1 = (SupportStaffMember) this.staffMembers.findByNinNumber(ID).get();
             return sm1.getAppointments();
-        }else if(this.clients.findClientByNationalHealthServiceNumber(ID).isPresent())
-        {
+        } else if (this.clients.findClientByNationalHealthServiceNumber(ID).isPresent()) {
             Client c1 = this.clients.findClientByNationalHealthServiceNumber(ID).get();
             return c1.getAppointments();
-        }
-        else{
+        } else {
             throw new NoSuchElementException("No Staff or Client has been located!");
         }
     }
@@ -340,20 +339,19 @@ public class CharityController {
     LinkedList<Appointment> behavioralSignsMissedAppOneSup() {
         LinkedList<Appointment> clientsThatMissed = new LinkedList<>();
         List<Client> clientsApp = getSupportWorkersClients();
-        List<AppointmentMeeting> appointmentMeetings;
+        List<AppointmentMeeting> appointmentMeetings = new ArrayList<>();
         int missAppointment = 0;
 
         for (Client c: clientsApp) {
-            for (Appointment app: c.getAppointments())
-            {
-                appointmentMeetings = app.getAppointmentMeetings();
+            for (Appointment app: c.getAppointments()) {
+                //appointmentMeetings = app.getAppointmentMeetings();
+                appointmentMeetings.addAll(app.getAppointmentMeetings());
 
                 if (appointmentMeetings.size() >= 3) {
                     appointmentMeetings.sort(Comparator.comparing(AppointmentMeeting::getDate).reversed());
 
                     for (int i = 0; i < 3; i++) {
-                        if (appointmentMeetings.get(i).getCancelled())
-                        {
+                        if (appointmentMeetings.get(i).getCancelled()) {
                             missAppointment++;
                         }
                     }
